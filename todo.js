@@ -2,7 +2,34 @@ const toDoForm = document.querySelector(".js-toDoform"),
 toDoInput = toDoForm.querySelector("input"),
 toDoList = document.querySelector(".js-toDoList");
 const TODOS_LS = 'toDos';
-const toDos=[];
+
+//each처럼 각각 만나야됨 (todo를 필터해주는 것임)
+// function filterFn(toDo){
+//     return toDo.id === 1
+
+//     //filter는 array의 모든 아이템을 통해 함수를 실행하고
+//     //true(1)인 아이템들만 가지고 새로운 array를 만든다
+//     /* 대략 내가 이해한게 맞다면, filter는 todo안의 배열을 받아서 이게 true인지 false인지
+//         인지해서 true면 따로 array를 만드는 방식으로 걸러주는 느낌?....
+
+// filter , each => list 에 있는 모든 item들을 불러옴
+//     */
+
+// }
+let toDos=[];
+
+function deleteToDo(event){
+    const btn = event.target;
+    const li = btn.parentNode;
+    toDoList.removeChild(li);
+
+    const cleanToDos = toDos.filter(function(toDo){
+        return toDo.id !== parseInt(li.id);
+        //모든 todos가 li의 id와 같지 않을 때
+    });
+    toDos = cleanToDos
+    saveToDos();
+}
 
 //todos를 가져와서 로컬에 저장하는 일을 함
 function saveToDos(){
@@ -15,6 +42,7 @@ function paintToDo(text){
     const li = document.createElement("li");
     const delBtn = document.createElement("button");
     delBtn.innerText = "❌";
+    delBtn.addEventListener("click", deleteToDo);
 
     const span = document.createElement("span");
     const newId = toDos.length + 1;
@@ -71,6 +99,11 @@ function loadToDos(){
     }
 
 }
+
+
+//todo 하나 지우기
+// 1. localstorge에서 지우기 후 저장, 2. html에서 지우기
+
 
 function init(){
     loadToDos();
